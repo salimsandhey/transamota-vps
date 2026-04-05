@@ -1,0 +1,258 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="flex flex-col min-h-screen">
+    <div class="flex flex-1 bg-gray-50">
+        @include('layouts.nav.admin-sidebar')
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            @include('layouts.nav.content-header', [
+                'title' => 'Subcategories of ' . $category->name,
+                'subtitle' => 'Manage subcategories for this category',
+                'headerActions' => '<a href="' . route('admin.categories.subcategories.create', $category) . '" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Add Subcategory
+                </a>'
+            ])
+
+            <!-- Success/Error Messages -->
+            @if(session('success'))
+                <div class="mx-8 mt-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div class="text-green-800 font-medium">{{ session('success') }}</div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mx-8 mt-6">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="text-red-800 font-medium">{{ session('error') }}</div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Subcategories Table -->
+            <div class="p-8">
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Subcategories</h3>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <form method="GET" class="flex gap-2">
+                                <div class="relative">
+                                    <input 
+                                        type="text" 
+                                        name="search" 
+                                        placeholder="Search subcategories..." 
+                                        value="{{ request('search') }}"
+                                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-64">
+                                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    Filter
+                                </button>
+                                
+                                @if(request()->has('search'))
+                                    <a href="{{ route('admin.categories.subcategories.index', $category) }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-300">
+                                        Clear
+                                    </a>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-xs text-gray-500 border-b border-gray-200">
+                                    <th class="pb-3 font-medium">Subcategory</th>
+                                    <th class="pb-3 font-medium">Description</th>
+                                    <th class="pb-3 font-medium">Products</th>
+                                    <th class="pb-3 font-medium text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                @forelse($subcategories as $subcategory)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-800 text-sm">{{ $subcategory->name }}</div>
+                                                <div class="text-xs text-gray-500">{{ $subcategory->slug }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-sm text-gray-600 max-w-xs truncate">
+                                        {{ $subcategory->description ?? 'No description' }}
+                                    </td>
+                                    <td class="py-4">
+                                        <a href="{{ route('admin.categories.subcategories.products', [$category, $subcategory]) }}" class="text-blue-600 hover:text-blue-800">
+                                            {{ $subcategory->products()->count() }} products
+                                        </a>
+                                    </td>
+                                    <td class="py-4 text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <a href="{{ route('admin.categories.subcategories.edit', [$category, $subcategory]) }}" 
+                                               class="text-gray-500 hover:text-gray-700" title="Edit">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                            </a>
+                                            
+                                            <button class="text-red-600 hover:text-red-800 delete-subcategory-btn" 
+                                                    title="Delete"
+                                                    data-subcategory-id="{{ $subcategory->id }}"
+                                                    data-subcategory-name="{{ $subcategory->name }}">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="py-8 text-center text-gray-500">
+                                        <svg class="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                                        </svg>
+                                        <p>No subcategories found</p>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    @if(method_exists($subcategories, 'hasPages') && $subcategories->hasPages())
+                    <div class="flex items-center justify-between mt-6">
+                        <div class="text-sm text-gray-600">
+                            Showing {{ $subcategories->firstItem() }} to {{ $subcategories->lastItem() }} of {{ $subcategories->total() }} results
+                        </div>
+                        <div class="mt-4">
+                            {{ $subcategories->links() }}
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle delete subcategory
+    document.querySelectorAll('.delete-subcategory-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const subcategoryId = this.getAttribute('data-subcategory-id');
+            const subcategoryName = this.getAttribute('data-subcategory-name');
+            
+            // Show custom confirmation popup
+            showDeleteConfirmation(subcategoryName, function() {
+                // Proceed with deletion
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/admin/categories/{{ $category->id }}/subcategories/${subcategoryId}`;
+                
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'DELETE';
+                form.appendChild(methodInput);
+                
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                form.appendChild(csrfInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+            });
+        });
+    });
+});
+
+// Custom delete confirmation popup (same as seller products)
+function showDeleteConfirmation(subcategoryName, onConfirm) {
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    overlay.id = 'delete-confirmation-overlay';
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'bg-white rounded-lg p-6 max-w-md w-full mx-4';
+    modal.innerHTML = `
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Delete Subcategory</h3>
+            <button id="close-modal" class="text-gray-400 hover:text-gray-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete the subcategory "<strong>${subcategoryName}</strong>"? This action cannot be undone.</p>
+        <div class="flex justify-end gap-3">
+            <button id="cancel-delete" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                Cancel
+            </button>
+            <button id="confirm-delete" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                Delete
+            </button>
+        </div>
+    `;
+    
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    
+    // Add event listeners
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    document.getElementById('cancel-delete').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    document.getElementById('confirm-delete').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        onConfirm();
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function closeOnEscape(e) {
+        if (e.key === 'Escape') {
+            document.body.removeChild(overlay);
+            document.removeEventListener('keydown', closeOnEscape);
+        }
+    });
+}
+</script>
+@endsection

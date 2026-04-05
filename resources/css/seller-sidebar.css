@@ -1,0 +1,110 @@
+/* Custom styles for collapsible seller sidebar */
+
+#sidebar {
+  transition: all 0.3s ease-in-out;
+}
+
+#sidebar.collapsed {
+  width: 5rem;
+}
+
+#sidebar.expanded {
+  width: 16rem;
+}
+
+#main-content {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 60;
+    transform: translateX(-100%);
+    width: 16rem; /* Ensure proper width on mobile */
+  }
+  
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  #main-content {
+    margin-left: 0;
+  }
+  
+  #sidebar-overlay {
+    display: block;
+  }
+  
+  .mobile-sidebar-open {
+    overflow: hidden;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  #sidebar {
+    position: relative;
+    transform: translateX(0) !important;
+  }
+  
+  #sidebar-overlay {
+    display: none !important;
+  }
+}
+
+/* Collapsed state styles */
+#sidebar.collapsed .sidebar-text {
+  display: none;
+}
+
+#sidebar.collapsed .user-info {
+  display: none;
+}
+
+#sidebar.collapsed .menu-label {
+  display: none;
+}
+
+#sidebar.collapsed #logo-text {
+  display: none;
+}
+
+/* Hide notification badges when sidebar is collapsed */
+#sidebar.collapsed .notification-badge {
+  display: none;
+}
+
+/* Ensure text elements are hidden when sidebar is collapsed */
+#sidebar.w-20 .sidebar-text,
+#sidebar.w-20 #logo-text,
+#sidebar.w-20 #user-info,
+#sidebar.w-20 .menu-label,
+#sidebar.w-20 .notification-badge {
+  display: none !important;
+}
+
+/* Toggle icon rotation */
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Fix for 767px width issue */
+@media (max-width: 767px) {
+  #sidebar-overlay.hidden {
+    display: none !important;
+  }
+  
+  #sidebar-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Ensure proper overflow handling */
+#sidebar {
+  overflow-x: hidden;
+}

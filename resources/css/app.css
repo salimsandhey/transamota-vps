@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+@import './seller-sidebar.css';
+@import './buyer-sidebar.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Slider navigation buttons */
+.slider-button {
+    transition: all 0.2s ease-in-out;
+}
+
+.slider-button:hover {
+    transform: scale(1.1);
+}
+
+.slider-button:active {
+    transform: scale(0.95);
+}
+
+/* Category slider specific styles */
+#category-slider {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#category-slider::-webkit-scrollbar {
+    display: none;
+}
+
+/* Quick category slider specific styles */
+#quick-category-slider .flex {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#quick-category-slider .flex::-webkit-scrollbar {
+    display: none;
+}
+
+/* Mobile header adjustments */
+@media (max-width: 767px) {
+    .mobile-header {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    .mobile-logo-text {
+        font-size: 1.25rem;
+    }
+    
+    .mobile-top-bar {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+    
+    .mobile-top-bar-links {
+        font-size: 0.75rem;
+    }
+    
+    /* Adjust logo size on mobile */
+    .mobile-logo {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* Ensure dropdown menus appear above other elements */
+#user-menu {
+    z-index: 1000;
+}
+
+#mobile-menu {
+    z-index: 1000;
+}
+
+#mobile-additional-menu {
+    z-index: 1000;
+}
+
+/* Toast notification styles */
+.toast-notification {
+    transform: translateY(-100%);
+    opacity: 0;
+}
