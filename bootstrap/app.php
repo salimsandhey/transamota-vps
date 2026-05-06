@@ -12,6 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'seller' => \App\Http\Middleware\EnsureSeller::class,
             'buyer' => \App\Http\Middleware\EnsureBuyer::class,
